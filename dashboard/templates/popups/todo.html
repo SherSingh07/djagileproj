@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<!-- Todo Information Popup starts here -->
+
+<div class="modal fade" id="TodoModal" tabindex="-1" role="dialog" aria-labelledby="todoModalLabel" aria-hidden="true" style="overflow-y: auto;">
+    <div class="modal-dialog">      
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" 
+                                      data-dismiss="modal">
+                    <span aria-hidden="true">&times;
+                    </span><span class="sr-only">
+                        Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    {{ request.user}}'s Todo List</h4>
+            </div>
+            <div class="modal-body" style="max-height: 420px; overflow-y: auto;">
+                <form method="post" action="/save_todo/">{% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_note">Note:</label>
+                        {{ frmAddTodo.note }}
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </form>
+
+                <table class="table" border="0" cellspacing="5" cellpadding="5" width="100%">
+                    <tr class="info">
+                        <td><b>#</b></td>
+                        <td><b>Note</b></td>
+                        <td><b>Status</b></td>
+                        <td><b>Date</b></td>
+                        <td><b>Delete</b></td>
+                    </tr>
+                    {% for todo in todos %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ todo.note }}</td>
+                        <td>{{ todo.done }}</td>
+                        <td>{{ todo.created_on }}</td>
+                        <td> 
+                            <a href="/del_todo/{{ todo.id }}" ><img class="img-circle" src={% static "images/del.png" %} ></img></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Todo Information Popup ends here -->

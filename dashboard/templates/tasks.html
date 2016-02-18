@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>DjProMan - Home</title>
+{% endblock %}
+
+{% block body %}
+<table width="100%">
+    <tr><td><b>PROJECT: {{ project.title }}</b></td>
+        <td align="right">Total tasks: {{ project.get_tasks.count }}</td>
+    </tr>
+<table>
+<hr>
+
+Description:<br>
+{{ project.description|safe }}
+
+<br><a class="btn btn-primary" href="#" data-toggle="modal" data-target="#AddTaskModal">Add Task</a><br><br>
+<table class="table" border="0" cellspacing="5" cellpadding="5" width="100%">
+    <tr class="info">
+        <td><b>#</b></td>
+        <td><b>Task</b></td>
+        <td><b>Type</b></td>
+        <td><b>Priority</b></td>
+        <td><b>Start Date</b></td>
+        <td><b>Worker</b></td>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="/task_detail/{{ task.id }}">{{ task.title }}</a></td>
+        <td>{{ task.type }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.start_date }}</td>
+        <td>{{ task.worker }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br> <br> <br> <br> <br> <br> <br>
+
+{% include "popups/add_task.html" %}
+
+{% endblock %}
+

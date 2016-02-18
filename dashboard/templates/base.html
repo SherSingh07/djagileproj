@@ -1,0 +1,135 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href={% static "css/bootstrap.min.css" %}>
+        <link rel="stylesheet" type="text/css" href={% static "css/style.css" %}>
+        <script src={% static "js/jquery.min.js" %}></script>
+        <script src={% static "js/bootstrap.min.js" %}></script>
+        <script type="text/javascript" src="/static/tiny_mce/tiny_mce.js"></script>
+        <script type="text/javascript" src="/static/django_tinymce/init_tinymce.js"></script>
+
+{% block head %}{% endblock %}
+    </head>
+    <body bgcolor="#ccddcc">
+
+        <!-- Navbar starts here here -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li  class="dropdown">
+                        </li>
+                        <li class="active"><a href="/">Dashboard <span class="sr-only">(current)</span></a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+
+                                {% for project in projects %}
+                                <li><a href="/project/{{ project.id }}">{{ project.title }}</a></li>
+                                {% endfor %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#AddProjectModal">Add Project</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Issues<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Current Search</a></li>
+                                <li><a href="#">Search Issues</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#"><b>RECENT ISSUES</b></a></li>
+                                <li><a href="#">Issue 1</a></li>
+                                <li><a href="#">Issue 2</a></li>
+                                <li><a href="#">Issue 3</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#"><b>FILTERS</b></a></li>
+                                <li><a href="#">My Open Issues</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Something Todo</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Something more...</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#AddProjectModal">Create</a>
+                        </li>
+
+                        <li><a href="/progress/">Progress</a></li>
+
+                        {% if request and not request.user.is_anonymous %}
+                        <li><a href="/logout/">Logout</a></li>
+                        {% else %}
+                        <li><a href="/login/">Login</a></li>
+                        {% endif %}
+
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="btn btn-inverse" href="#" data-toggle="modal" data-target="#TodoModal">ToDo</a></li>
+                        <li class="dropdown">
+                            <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                {% if request and not request.user.is_anonymous %}
+                                <b> {{ request.user }}</b>
+                                {% else %}
+                                <b>Guest</b>
+                                {% endif %}
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                {% if request and not request.user.is_anonymous %}
+                                <li><a href="/logout/">Logout</a></li>
+                                {% else %}
+                                <li><a href="/login/">Login</a></li>
+                                {% endif %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/register/">Register</a></li>
+                                <li><a href="http://www.weavebytes.com" target="blank">About Us</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#HelpModal">Help</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <!-- Navbar ends here here -->
+        <div id="page-container">
+
+            <hr>
+            {% block body %}{% endblock %}
+
+        </div>
+        <div id="footer">
+            <center><br><p>Under development by weavebytes</p></center>
+        </div>
+
+        {% include "popups/add_project.html" %}
+        {% include "popups/todo.html" %}
+        {% include "popups/help.html" %}
+
+    </body>
+</html>
